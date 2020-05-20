@@ -1,10 +1,6 @@
 <?php
 
     session_start();
-    
-    if (!isset($_SESSION["inning"])){
-        $_SESSION["inning"]="1";
-    }
 
     if (!isset($_SESSION[$_SESSION["hostTeam"]."runs"])){
         $_SESSION[$_SESSION["hostTeam"]."runs"]=0;
@@ -68,47 +64,6 @@
     
     }
     
-
-    
-    if($_SESSION['inning']=="1"){
-        
-        if( (($_SESSION['tosswon']=="team1" and $_SESSION['batobowl']=="bat") or ($_SESSION['tosswon']=="team2" and $_SESSION['batobowl']=="bowl"))){
-
-            $_SESSION["batteam"]=$_SESSION["hostTeam"];
-            $_SESSION["bowlteam"]=$_SESSION["visitorTeam"];
-                                 
-
-        }
-        else{
-            
-                    
-            $_SESSION["batteam"]=$_SESSION["visitorTeam"];
-            $_SESSION["bowlteam"]=$_SESSION["hostTeam"];
-                            
-                        
-        }
-                    
-    }
-                
-    else{
-                    
-        if( (($_SESSION['tosswon']=="team1" and $_SESSION['batobowl']=="bat") or ($_SESSION['tosswon']=="team2" and $_SESSION['batobowl']=="bowl"))){
-
-            $_SESSION["batteam"]=$_SESSION["visitorTeam"];
-            $_SESSION["bowlteam"]=$_SESSION["hostTeam"];
-        
-
-        }
-        else{
-                            
-             $_SESSION["batteam"]=$_SESSION["hostTeam"];     
-             $_SESSION["bowlteam"]=$_SESSION["visitorTeam"];
-        
-        }
-                    
-                    
-    }
-                
                 
            
             $thisover=0;
@@ -116,6 +71,8 @@
             if (array_key_exists('runs',$_GET)){
                 
                 if(!($_GET['wicket']== on)){
+                    
+                    
                 $runs = 0;
                 
                 $runs = $_GET['runs'];
@@ -192,19 +149,76 @@
 
                 }
                 
+                
+                
+                
                 if ($_SESSION[$_SESSION["bowlteam"]."overballs"]==6){
-                $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][1] = round($_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][1]);
-                if ($thisover==0){
                     
-                $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][2] = $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][2]+1;
+                    
+                            $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][1] = round($_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][1]);
+                            
+                            if ($thisover==0){
+                                
+                                $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][2] = $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][2]+1;
+            
+                                
+                            }
+                            $a=$_SESSION[$_SESSION["bowlteam"]."over"];
+                            $b=$_SESSION[$_SESSION["bowlteam"]."overballs"];
+                            
+                            if ((round($a.".".$b) == $_SESSION['over'])){
+                             
+                                if ($_SESSION['inning']=="2"){
+            
+                                    if ($_SESSION[$_SESSION["batteam"]."runs"]<($_SESSION[$_SESSION["bowlteam"]."runs"])){
+                                        
+                                        echo '<script>alert("hi")</script>';
+                                        echo '<script>alert("Congrats Team '.$_SESSION["batteam"].'\nYou won the match")</script>';
+                                        session_destroy();
+                                        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                                    }
+                                    
+                                    if ($_SESSION[$_SESSION["batteam"]."runs"]==($_SESSION[$_SESSION["bowlteam"]."runs"])){
+                                        
+                                        echo '<script>alert("Match Tied")</script>';
+                                        session_destroy();
+                                        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
+                            
+                            if ((round($a.".".$b) == $_SESSION['over']) and $_SESSION['inning']=="1"){
+                                
+                                echo '<script type="text/javascript">alert(kjbkj"' . $msg . '")</script>';
 
+                                list($_SESSION['batteam'],$_SESSION['bowlteam'])=array($_SESSION['bowlteam'],$_SESSION['batteam']);
+                                    $_SESSION['strikerindex'] = 0;
+                                    $_SESSION['nonstrikerindex'] = 1;
+                                    $_SESSION['bowlerindex'] = 0;
+                                    $_SESSION['inning'] = "2";
+                                                    echo "<script type='text/javascript'> document.location = 'player.php'; </script>";
+
+                            }
+                            else{
+                             
+                                echo "<script type='text/javascript'> document.location = 'bowler.php'; </script>";
+                            
+                                
+                            }
+            
                     
                 }
-                header("LOCATION: bowler.php"); 
+            
+            
+            
+            
                 
             }
-                
-            }
+            
+            
             
             else{
                 
@@ -231,6 +245,45 @@
 
                     
                 }
+                
+                            $a=$_SESSION[$_SESSION["bowlteam"]."over"];
+                            $b=$_SESSION[$_SESSION["bowlteam"]."overballs"];
+                            if ((round($a.".".$b) == $_SESSION['over'])){
+                             
+                                if ($_SESSION['inning']=="2"){
+            
+                                    if ($_SESSION[$_SESSION["batteam"]."runs"]<($_SESSION[$_SESSION["bowlteam"]."runs"])){
+                                        
+                                        echo '<script>alert("hi")</script>';
+                                        echo '<script>alert("Congrats Team '.$_SESSION["batteam"].'\nYou won the match")</script>';
+                                        session_destroy();
+                                        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                                        
+                                    }
+                                    
+                                    if ($_SESSION[$_SESSION["batteam"]."runs"]==($_SESSION[$_SESSION["bowlteam"]."runs"])){
+                                        
+                                        echo '<script>alert("Match Tied")</script>';
+                                        session_destroy();
+                                        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
+                            
+                            if ((round($a.".".$b) == $_SESSION['over']) and $_SESSION['inning']=="1"){
+                                
+                                //echo "<script>alert('hi')</script>";
+                                list($_SESSION['batteam'],$_SESSION['bowlteam'])=array($_SESSION['bowlteam'],$_SESSION['batteam']);
+                                    $_SESSION['strikerindex'] = 0;
+                                    $_SESSION['nonstrikerindex'] = 1;
+                                    $_SESSION['bowlerindex'] = 0;
+                                    $_SESSION['inning'] = "2";
+                                                    echo "<script type='text/javascript'> document.location = 'player.php'; </script>";
+
+                            }   
 
             }
             
@@ -246,8 +299,17 @@
                 
             
             
-             print_r($_SESSION);
+        if ($_SESSION['inning']=="2"){
             
+            if ($_SESSION[$_SESSION["batteam"]."runs"]>=($_SESSION[$_SESSION["bowlteam"]."runs"]+1)){
+                
+                echo '<script>alert("Congrats Team '.$_SESSION["batteam"].'\nYou won the match")</script>';
+                session_destroy();
+                echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                
+            }
+            
+        }
             
 ?>
 
@@ -393,32 +455,69 @@
       
       <div class="scoreboard row">
      
-            <div id="runs" class="col-8">
+
+            <?php
+            if ($_SESSION['inning']=='2'){
+             echo '<div id="runs" <div class="col-6">';
                 
-                <?php
+            }
+            else{
+                echo '<div id="runs" <div class="col-8">';
+            }
                         
                         echo $_SESSION["batteam"].'<br>';
                         echo '<span id="batteamruns" style="font-size:250%;position:relative;top:-5px;">'.$_SESSION[$_SESSION["batteam"]."runs"].' - '.$_SESSION[$_SESSION["batteam"]."wickets"].'</span> <span style="position:relative;top:-5px;color:#909090">('.$_SESSION[$_SESSION["bowlteam"]."over"].'.'.$_SESSION[$_SESSION["bowlteam"]."overballs"].')</span>';
                         
-                ?>
-                
-            </div>
             
-            <div class="col-4">
                 
-                <?php
+            echo '</div>';
+            ?>
+            <?php
+            if ($_SESSION['inning']=='2'){
+             echo '<div class="col-2">';
                 
+            }
+            else{
+                echo '<div class="col-4">';
+            }
+
                         if ($_SESSION[$_SESSION["bowlteam"]."over"]!=0 or $_SESSION[$_SESSION["bowlteam"]."overballs"]!=0){
-                            echo '<span style="position:relative;top:-5px;color:#909090">CRR<br><br>'.round(((6*$_SESSION[$_SESSION["batteam"]."runs"])/($_SESSION[$_SESSION["bowlteam"]."over"]*6+$_SESSION[$_SESSION["bowlteam"]."overballs"])),2).'</span>';
+                            echo '<span style="position:relative;top:0px;color:#909090">CRR<br><br>'.round(((6*$_SESSION[$_SESSION["batteam"]."runs"])/($_SESSION[$_SESSION["bowlteam"]."over"]*6+$_SESSION[$_SESSION["bowlteam"]."overballs"])),2).'</span>';
                         }
                         else{
                             
                             echo '<span style="position:relative;color:#909090">CRR<br> <span style="position:relative;top:20px">0.00</span></span>';
                             
                         }
-                ?>
-            </div>
-             
+            
+            echo '</div>';
+            ?>
+            <?php
+            if ($_SESSION['inning']=='2'){
+             echo '<div class="col-2">';
+                            
+                            echo '<span style="position:relative;color:#909090">Target<br> <span style="position:relative;top:20px">'.($_SESSION[$_SESSION["bowlteam"]."runs"]+1).'</span></span>';
+                        
+                
+            echo '</div>';
+            }
+            
+            ?>
+            <?php
+            if ($_SESSION['inning']=='2'){
+             echo '<div class="col-2">';
+                
+            
+                            echo '<span style="position:relative;color:#909090">RR<br> <span style="position:relative;top:20px">'.round(((6*($_SESSION[$_SESSION["bowlteam"]."runs"]+1))/((6*$_SESSION['over'])-$_SESSION[$_SESSION["bowlteam"]."over"]*6+$_SESSION[$_SESSION["bowlteam"]."overballs"])),2).'</span></span>';
+    
+                            //echo '<span style="position:relative;top:0px;color:#909090">RR<br><br>'.round(((6*($_SESSION[$_SESSION["bowlteam"]."runs"]+1))/((6*$_SESSION['over'])-$_SESSION[$_SESSION["bowlteam"]."over"]*6+$_SESSION[$_SESSION["bowlteam"]."overballs"])),2).'</span>';
+                    
+                
+                
+            echo '</div>';
+            }
+            
+            ?>
      
       </div>
       
@@ -450,7 +549,6 @@
       <td>'.$_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][3].'</td>
       <td>'.$_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][4].'</td>
       <td>'.round(($_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][1]*100)/$_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][2]).'</td>
-
       
     </tr>
     
@@ -461,12 +559,9 @@
       <td>'.$_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['nonstrikerindex']][3].'</td>
       <td>'.$_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['nonstrikerindex']][4].'</td>
       <td>'.round(($_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['nonstrikerindex']][1]*100)/$_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['nonstrikerindex']][2]).'</td>
-
     </tr>
-
   </tbody>
 </table>
-
 <table class="table table-sm table-borderless">
   <thead>
     <tr style="color:#909090">
@@ -489,12 +584,9 @@
       <td>'.$_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][3].'</td>
       <td>'.$_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][4].'</td>
       <td>'.round((($_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][3]*6)/(6*$int+$dec)),2).'</td>
-
     </tr>
-
   </tbody>
 </table>
-
 ';
 ?>
           

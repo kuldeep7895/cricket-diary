@@ -24,34 +24,46 @@
             $error.="Bowler field is empty.<br>";
             
         }
+      
+        if (!isset($_SESSION['inning'])){
+    
+        $_SESSION['inning']="1";
+    
+    }
         
         if(!$error){
             
+           
+    if($_SESSION['inning']=="1"){
         
+        if( (($_SESSION['tosswon']=="team1" and $_SESSION['batobowl']=="bat") or ($_SESSION['tosswon']=="team2" and $_SESSION['batobowl']=="bowl"))){
+
+            $_SESSION["batteam"]=$_SESSION["hostTeam"];
+            $_SESSION["bowlteam"]=$_SESSION["visitorTeam"];
+                                 
+
+        }
+        else{
             
-            if( ($_SESSION['tosswon']=="team1" and $_SESSION['batobowl']=="bat") or ($_SESSION['tosswon']=="team2" and $_SESSION['batobowl']=="bowl")){
+                    
+            $_SESSION["batteam"]=$_SESSION["visitorTeam"];
+            $_SESSION["bowlteam"]=$_SESSION["hostTeam"];
+                            
+                        
+        }
+                    
+    }
                 
 
-                $_SESSION["BAT ".$_SESSION['hostTeam']]=[];
-                array_push($_SESSION["BAT ".$_SESSION['hostTeam']],[$_GET['striker'],0,0,0,0],[$_GET['nonstriker'],0,0,0,0]);
-            
-                $_SESSION["BOWL ".$_SESSION['visitorTeam']]=[];
-                array_push($_SESSION["BOWL ".$_SESSION['visitorTeam']],[$_GET['bowler'],0,0,0,0]);
-            
-                echo "<script type='text/javascript'> document.location = 'match.php'; </script>";
 
-            }
-            else{
-                
-                $_SESSION["BAT ".$_SESSION['visitorTeam']]=[];
-                array_push($_SESSION["BAT ".$_SESSION['visitorTeam']],[$_GET['striker'],0,0,0,0],[$_GET['nonstriker'],0,0,0,0]);
-
-                $_SESSION["BOWL ".$_SESSION['hostTeam']]=[];
-                array_push($_SESSION["BOWL ".$_SESSION['hostTeam']],[$_GET['bowler'],0,0,0,0]);
+                $_SESSION["BAT ".$_SESSION['batteam']]=[];
+                array_push($_SESSION["BAT ".$_SESSION['batteam']],[$_GET['striker'],0,0,0,0],[$_GET['nonstriker'],0,0,0,0]);
             
-                echo "<script type='text/javascript'> document.location = 'match.php'; </script>";
+                $_SESSION["BOWL ".$_SESSION['bowlteam']]=[];
+                array_push($_SESSION["BOWL ".$_SESSION['bowlteam']],[$_GET['bowler'],0,0,0,0]);
+                echo "<script type='text/javascript'> document.location = 'match.php'; </script>";            
 
-            }
+            
             
             
         }
@@ -63,9 +75,8 @@
     
         
     }
-    
-    
 
+        
 ?>
 
 <!doctype html>

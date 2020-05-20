@@ -38,6 +38,7 @@
             $_SESSION["tosswon"] = $_GET['tosswon'];
             $_SESSION["batobowl"] = $_GET['batobowl'];
             $_SESSION["over"] = $_GET['overs'];
+            $_SESSION["players"] = $_GET["players"];
             header("Location: player.php");
             
         }
@@ -194,6 +195,12 @@
       
       </div>
       
+      <p style="color: forestgreen;margin-left: 8px;margin-top: 5px;">Players</p>
+          <div class="overs">
+      
+          <input type="text" style="border-top: none;border-right: none; border-left: none; border-bottom: 1px solid black;width: 100%;outline: 0;margin-bottom: 10px" placeholder="11" name="players">
+      
+      </div>
       <button type="submit" class="btn btn-success" style="float: right;margin-right: 8px;margin-top: 8px; border-radius: 8px" name="submit">Start Match</button>
       </form>
       

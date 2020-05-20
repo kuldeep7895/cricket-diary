@@ -3,7 +3,6 @@
 
     session_start();
 
-
     $error="";
     if(array_key_exists("submit",$_GET)){
         
@@ -25,11 +24,7 @@
                         $_SESSION['strikerindex'] = sizeof($_SESSION["BAT ".$_SESSION['batteam']])-1; 
                         
 
-                        if ($_SESSION[$_SESSION["bowlteam"]."overballs"]==6){
-                            
-                                echo "<script type='text/javascript'> document.location = 'bowler.php'; </script>";
-                
-                        }
+                        
                     
                     
                 }
@@ -38,10 +33,11 @@
                     
                         $_SESSION[$_SESSION["batteam"]."runs"]=$_SESSION[$_SESSION["batteam"]."runs"]+$_SESSION['ballrun'];
                         $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][3] = $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][3]+$_SESSION['ballrun'];
-                    if ($_SESSION['ballrun']%2!=0){
+                        $_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][1] = $_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][1] +$_SESSION['ballrun'];                    
+                    if ($_SESSION['ballrun']%2==0){
                     
 
-                        list($_SESSION['strikerindex'],$_SESSION['nonstrikerindex'])=array($_SESSION['nonstrikerindex'],$_SESSION['strikerindex']);
+                        
                    
                         array_push($_SESSION["BAT ".$_SESSION['batteam']],[$batsman,0,0,0,0]);
                         $_SESSION['nonstrikerindex'] = sizeof($_SESSION["BAT ".$_SESSION['batteam']])-1;
@@ -50,6 +46,7 @@
                     }
                     else{
                         
+                        list($_SESSION['strikerindex'],$_SESSION['nonstrikerindex'])=array($_SESSION['nonstrikerindex'],$_SESSION['strikerindex']);
                         array_push($_SESSION["BAT ".$_SESSION['batteam']],[$batsman,0,0,0,0]);
                         $_SESSION['strikerindex'] = sizeof($_SESSION["BAT ".$_SESSION['batteam']])-1; 
 
@@ -60,9 +57,10 @@
                 
                 else if($_GET['select'] == 'nonstriker'){
                     
-                    $_SESSION[$_SESSION["batteam"]."runs"]=$_SESSION[$_SESSION["batteam"]."runs"]+$_SESSION['ballrun'];
+                        $_SESSION[$_SESSION["batteam"]."runs"]=$_SESSION[$_SESSION["batteam"]."runs"]+$_SESSION['ballrun'];
                         $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][3] = $_SESSION["BOWL ".$_SESSION["bowlteam"]][$_SESSION['bowlerindex']][3]+$_SESSION['ballrun'];
-                        if ($_SESSION['ballrun']%2!=0){
+                        $_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][1] = $_SESSION["BAT ".$_SESSION["batteam"]][$_SESSION['strikerindex']][1] +$_SESSION['ballrun'];
+                        if ($_SESSION['ballrun']%2==0){
                     
 
                         list($_SESSION['strikerindex'],$_SESSION['nonstrikerindex'])=array($_SESSION['nonstrikerindex'],$_SESSION['strikerindex']);
@@ -102,12 +100,61 @@
                     
                     
                 }
+                                    $_SESSION[$_SESSION["batteam"]."wickets"]=$_SESSION[$_SESSION["batteam"]."wickets"]+1;
+
+                if ($_SESSION[$_SESSION["batteam"]."wickets"]==$_SESSION['players']-1){
+                                
+                                if ($_SESSION['inning']=="2"){
+                                    
+                                    if ($_SESSION[$_SESSION["batteam"]."runs"]>=($_SESSION[$_SESSION["bowlteam"]."runs"]+1)){
                 
+                                        echo '<script>alert("Congrats Team '.$_SESSION["bowlteam"].'\nYou won the match")</script>';
+                                        session_destroy();
+                                        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                                        
+                                    }
+            
+                                    if ($_SESSION[$_SESSION["batteam"]."runs"]<($_SESSION[$_SESSION["bowlteam"]."runs"])){
+                                        
+                                        echo '<script>alert("Congrats Team '.$_SESSION["bowlteam"].'\nYou won the match")</script>';
+                                        session_destroy();
+                                        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                                    }
+                                    
+                                    if ($_SESSION[$_SESSION["batteam"]."runs"]==($_SESSION[$_SESSION["bowlteam"]."runs"])){
+                                        
+                                        echo '<script>alert("Match Tied")</script>';
+                                        session_destroy();
+                                        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                                        
+                                    }
+                                    
+                                }
+                                
+                                list($_SESSION['batteam'],$_SESSION['bowlteam'])=array($_SESSION['bowlteam'],$_SESSION['batteam']);
+                                    $_SESSION['strikerindex'] = 0;
+                                    $_SESSION['nonstrikerindex'] = 1;
+                                    $_SESSION['bowlerindex'] = 0;
+                                    $_SESSION['inning'] = "2";
+                                    echo "<script type='text/javascript'> document.location = 'player.php'; </script>";
+
+                            }
+                else{
                 
-                    $_SESSION[$_SESSION["batteam"]."wickets"]=$_SESSION[$_SESSION["batteam"]."wickets"]+1;
+                if ($_SESSION[$_SESSION["bowlteam"]."overballs"]==6){
+                            
+                                echo "<script type='text/javascript'> document.location = 'bowler.php'; </script>";
+                
+                        }
+                else{
                     echo "<script type='text/javascript'> document.location = 'match.php'; </script>";
 
-            }
+                }
+                
+                
+                }
+                    
+                }
             
             
         
@@ -122,7 +169,8 @@
         
     
     
-    
+        print_r($_SESSION);
+
 
 ?>
 

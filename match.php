@@ -1,7 +1,18 @@
 <?php
 
     session_start();
-
+    
+    if (!$_SESSION['index'] or !$_SESSION['player']){
+        
+        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+        
+    }
+    else{
+        
+        $_SESSION['match'] = true;
+        
+    }
+    
     if (!isset($_SESSION[$_SESSION["hostTeam"]."runs"])){
         $_SESSION[$_SESSION["hostTeam"]."runs"]=0;
     
@@ -67,6 +78,25 @@
                 
            
             $thisover=0;
+            if (array_key_exists('new',$_GET)){
+            
+                session_destroy();
+
+                echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+                
+            }
+            
+            if (array_key_exists('retire',$_GET)){
+            
+                echo "<script type='text/javascript'> document.location = 'retire.php'; </script>";
+                
+            }
+            
+            if (array_key_exists('scoreboard',$_GET)){
+            
+                echo "<script type='text/javascript'> document.location = 'scoreboard.php'; </script>";
+                
+            }
             
             if (array_key_exists('runs',$_GET)){
                 
@@ -310,8 +340,9 @@
             }
             
         }
-            
+
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -439,7 +470,7 @@
         
 
       </style>
-    <title>Hello, world!</title>
+    <title>My Match</title>
   </head>
   <body>
   
@@ -632,8 +663,8 @@
           <div class="row align-items-start">
               
             <div class="col-5 menu">
-            <button type="button" class="btn btn-light" style="background-color: #2E7D32;color:white;width:100%">Undo</button><br>
-            <button type="button" class="btn btn-light" style="background-color: #2E7D32;color:white;width:100%">Partnerships</button><br>
+            <button type="submit" class="btn btn-light" style="background-color: #2E7D32;color:white;width:100%" name="retire">Retire</button><br>
+            <button type="submit" class="btn btn-light" style="background-color: #2E7D32;color:white;width:100%" name="scoreboard">Scoreboard</button><br>
             <button type="button" class="btn btn-light" style="background-color: #2E7D32;color:white;width:100%">Extras</button>
             </div>
             
@@ -650,8 +681,12 @@
                <button type="submit" name="runs" class="btn btn-light run-btn" style="border-radius:50%;border:2px solid green;margin-right:4px;margin-bottom:3px" value=6>6</button>
                 </form>
             </div>
- 
-      
+            </div>
+ <div style="clear:both;"></div>
+
+              <form>
+        <button type="submit" name="new" class="btn btn-primary btn-lg btn-block" style="margin-top:15px;margin-bottom:5px;">New Match</button>
+        </form>
       
 
     <!-- Optional JavaScript -->

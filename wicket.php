@@ -2,7 +2,14 @@
 
 
     session_start();
-
+    
+    if (!$_SESSION['index'] or !$_SESSION['player'] or !$_SESSION['match']){
+        
+        
+        echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+        
+    }
+    
     $error="";
     if(array_key_exists("submit",$_GET)){
         
@@ -14,7 +21,7 @@
         
         if(!$error){
             
-                $batsman = $_GET['batsman'];
+                $batsman = trim($_GET['batsman']);
                 $a = $_SESSION["BAT ".$_SESSION["batteam"]];
 
                 if($_GET['select'] == 'bowled' or $_GET['select'] == 'stump' or $_GET['select'] == 'lbw' or $_GET['select'] == 'hit'){
@@ -169,7 +176,6 @@
         
     
     
-        print_r($_SESSION);
 
 
 ?>
@@ -211,7 +217,7 @@
           }
           
       </style>
-    <title>Hello, world!</title>
+    <title>Bowler's Glory</title>
   </head>
   <body>
       

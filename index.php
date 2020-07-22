@@ -1,10 +1,18 @@
 <?php
 
     session_start();
+    
+    if ($_SESSION['match']){
+        
+        header("Location: match.php");
+        
+    }
+    
+    
     $error="";
     if(array_key_exists("submit",$_GET)){
      
-        if(!$_GET['hostTeam']){
+        if(!isset($_GET['hostTeam'])){
         
             $error.="Host Team is reaquired.<br>";
             
@@ -39,6 +47,7 @@
             $_SESSION["batobowl"] = $_GET['batobowl'];
             $_SESSION["over"] = $_GET['overs'];
             $_SESSION["players"] = $_GET["players"];
+            $_SESSION['index']=true;
             header("Location: player.php");
             
         }
@@ -125,7 +134,7 @@
           }
           
       </style>
-    <title>Hello, world!</title>
+    <title>Cricket Diary(Let's Play)</title>
   </head>
   <body>
       

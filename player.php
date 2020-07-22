@@ -3,6 +3,17 @@
 
     session_start();
 
+      if (isset($_SESSION['match'])){
+        
+        header("Location: match.php");
+        
+    }
+    
+    if (!isset($_SESSION['index'])){
+        
+        header("Location: index.php");
+        
+    }
 
     $error="";
     if(array_key_exists("submit",$_GET)){
@@ -61,6 +72,9 @@
             
                 $_SESSION["BOWL ".$_SESSION['bowlteam']]=[];
                 array_push($_SESSION["BOWL ".$_SESSION['bowlteam']],[$_GET['bowler'],0,0,0,0]);
+            
+                $_SESSION['player'] = true;
+
                 echo "<script type='text/javascript'> document.location = 'match.php'; </script>";            
 
             
@@ -76,7 +90,8 @@
         
     }
 
-        
+
+
 ?>
 
 <!doctype html>
@@ -116,7 +131,7 @@
           }
           
       </style>
-    <title>Hello, world!</title>
+    <title>Select Players</title>
   </head>
   <body>
       

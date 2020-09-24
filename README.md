@@ -5,4 +5,4 @@ This is repository is of my website http://kuldeepsan09-com.stackstaging.com/cri
 Each .php corrresponds to the webpage with its function similiar to its name e.g. bowler.php refers to webpage that asks for a new bowler
 Share your reviews still in development so might face glithches
 
-Thank you for reading me 
+Thank you for reading me!:) 
